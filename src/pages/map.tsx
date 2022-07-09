@@ -15,7 +15,8 @@ export default function MapPage({ allStations, workingStations }: MapPageProps) 
 
 	const { theme } = useTheme();
 
-	const token = process.env.TILES_TOKEN!;
+
+
 
 	const Map = dynamic(() => import("../components/Map"), { ssr: false });
 
@@ -23,7 +24,15 @@ export default function MapPage({ allStations, workingStations }: MapPageProps) 
 
 	return (
 		<>
-			<Map token={token} allStations={allStations || []} workingStations={workingStations || []} tilesStyle={theme === `dark` ? `jawg-dark` : `jawg-light`}></Map>
+			<div className="h-innerpage w-innerpage">
+
+				<Map
+
+					allStations={allStations || []}
+					workingStations={workingStations || []}
+					tilesStyle={theme === `dark` ? `jawg-dark` : `jawg-light`}
+				/>
+			</div>
 		</>
 
 	)
