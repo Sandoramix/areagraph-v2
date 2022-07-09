@@ -9,6 +9,7 @@ import { ThemeProvider } from 'next-themes'
 import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
+	if (process.env.NODE_ENV === 'production') console.warn = function () { };
 	return (
 		<>
 			<ThemeProvider attribute="class">
