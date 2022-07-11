@@ -9,7 +9,7 @@ function addDays(date: Date, days: number) {
 	return result;
 }
 function formatDate(date: Date) {
-	return date.toISOString().slice(0, 10);
+	return date?.toISOString().slice(0, 10) || "";
 }
 
 
@@ -65,6 +65,7 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 										setStartDateString(formatDate(date))
 									}}
 								dateFormat={"yyyy-MM-dd"}
+								allowSameDay={true}
 							/>
 
 
@@ -81,6 +82,7 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 									setEndDateString(formatDate(date))
 								}}
 								dateFormat={"yyyy-MM-dd"}
+								allowSameDay={true}
 							/>
 
 
