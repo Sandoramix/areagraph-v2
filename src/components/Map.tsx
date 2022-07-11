@@ -1,5 +1,5 @@
 
-import { Dispatch, FC, SetStateAction, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { LayerGroup, LayersControl, MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 
 import { Station } from "../utils/types";
@@ -26,21 +26,23 @@ export type SelectedStation = {
 type MapProps = {
 	allStations: Station[],
 	workingStations: Station[],
-	tilesStyle: string,
 
 }
-const Map: FC<MapProps> = ({ allStations, workingStations, tilesStyle }) => {
+const Map: FC<MapProps> = ({ allStations, workingStations }) => {
+	const { theme } = useTheme();
 
 	const [selectedStation, setSelectedStation] = useState<SelectedStation | null>(null);
+
+
 
 	const mapRef = useRef<L.Map | null>(null);
 
 	return (
 		<>
-			<MapContainer className="w-full h-full" zoom={9} minZoom={6} maxZoom={18} center={[43.775493, 11.282270]} ref={mapRef}>
+			<MapContainer className="w-full h-full sm" zoom={9} minZoom={6} maxZoom={18} center={[43.775493, 11.282270]} ref={mapRef}>
 				<TileLayer
 					attribution='<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib" >&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib" >&copy; OSM contributors</a>'
-					url={`https://{s}.tile.jawg.io/${tilesStyle}/{z}/{x}/{y}{r}.png?access-token=${process.env.TILES_TOKEN}`}
+					url={`https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${process.env.TILES_TOKEN}`}
 				/>
 
 				<LayersControl position="topleft">
@@ -69,8 +71,13 @@ const Map: FC<MapProps> = ({ allStations, workingStations, tilesStyle }) => {
 															}
 
 
+															let width = window.innerWidth;
+															let height = window.innerHeight;
 
-															mapRef.current?.setView([window.innerWidth < 768 ? lat - .35 : lat, window.innerWidth < 768 ? lng : lng + .5])
+															let newLat = width < 640 ? lat - height / 5333 : lat;
+															let newLng = width < 640 ? lng : lng + width / 7000;
+
+															mapRef.current?.setView([newLat, newLng], 11)
 
 															return newStation;
 														});
@@ -97,7 +104,7 @@ const Map: FC<MapProps> = ({ allStations, workingStations, tilesStyle }) => {
 				</LayersControl>
 			</MapContainer>
 
-			<StationInfo station={selectedStation?.current || null}></StationInfo>
+			<StationInfo station={selectedStation?.current || null} resetStation={() => setSelectedStation(null)}></StationInfo>
 		</>
 	);
 }
