@@ -29,7 +29,6 @@ type MapProps = {
 
 }
 const Map: FC<MapProps> = ({ allStations, workingStations }) => {
-	const { theme } = useTheme();
 
 	const [selectedStation, setSelectedStation] = useState<SelectedStation | null>(null);
 
@@ -52,11 +51,14 @@ const Map: FC<MapProps> = ({ allStations, workingStations }) => {
 							{ name: `Working Stations`, list: workingStations }
 						].map(({ name, list }, index) => {
 							return (
-								<LayersControl.BaseLayer key={index} name={name} checked={index === 0}>
+								<LayersControl.BaseLayer key={index} name={name} checked={index === 0} >
 									<LayerGroup>
 										{list.map((station) => (
 											<Marker
 												eventHandlers={{
+													add: (e) => {
+														setSelectedStation(null);
+													},
 													click: (e) => {
 														let { lat, lng } = e.target.getLatLng()
 														var newStation: SelectedStation | null = null
