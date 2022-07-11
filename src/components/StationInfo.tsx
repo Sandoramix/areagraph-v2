@@ -24,13 +24,13 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 	// 	}
 
 	// }, [station]);
-	if (!station) return null;
 
 	const [startDate, setStartDate] = useState<Date>(new Date());
 	const [endDate, setEndDate] = useState<Date>(new Date());
 
 	const [startDateString, setStartDateString] = useState<string>(formatDate(new Date()));
 	const [endDateString, setEndDateString] = useState<string>(formatDate(new Date()));
+	if (!station) return null;
 
 
 	return (
