@@ -4,7 +4,7 @@ import { LayerGroup, LayersControl, MapContainer, Marker, Popup, TileLayer, Tool
 
 import { Station } from "../utils/types";
 import * as L from 'leaflet'
-import { useTheme } from "next-themes";
+
 import StationInfo from "./StationInfo";
 
 const markerIconDefault = L.icon({
