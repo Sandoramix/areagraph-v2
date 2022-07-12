@@ -1,6 +1,3 @@
-export const AllStations = () => "select st.id,st.name,st.latitude,st.longitude from station st"
-
-
 const workingStationIds = [
 	34,
 	49,
@@ -31,41 +28,35 @@ const workingStationIds = [
 	31501097,
 	31515046
 ]
+const neededSensors = [
+	'T', 'RH', 'CO2', 'PM2.5', 'PM10'
+]
+
+export const AllStations = () => "select ST.id,ST.name,ST.latitude,ST.longitude from station ST"
+
 export function WorkingStations() {
-	return `select st.id,st.name,st.latitude,st.longitude from station as st where id in (${workingStationIds.join(",")})`
+	return `select ST.id,ST.name,ST.latitude,ST.longitude from station as ST where id in (${workingStationIds.join(",")})`
 }
-
-
-
-export function stationById(id: number) {
-	return `select * from station where id = ${id}`
-}
-
-
 
 export function stationInfoById(id: number) {
-	return `select st.id,st.name,st.latitude,st.longitude from station as st where id = ${id}`
+	return `select ST.id,ST.name,ST.latitude,ST.longitude from station as ST where id = ${id}`
 }
+
+
+export const getSensors = () => `select S.id as sensor_id,S.sensor_type,S.min_range_val as sensor_min_val,S.max_range_val as sensor_max_val,S.unit as sensor_unit from sensor S where S.sensor_type in ('${neededSensors.join("','")}')`
+
+
 
 
 
 export function fetch_betweenDates(st_id: number, dt_from: string, dt_to: string) {
-	return `select sdha.bucket as created_at, 
-	sdha.avg as average,
-	ss.id as sensor_id,
-	ss.sensor_type as sensor_type,
-	ss.min_range_val as sensor_min_val,
-	ss.max_range_val as sensor_max_val,
-	ss.unit as sensor_unit,
-	st.id as station_id,
-	st.name as station_name,
-	st.latitude as station_latitude,
-	st.longitude as station_longitude from station_data_hourly_avg as sdha 
-	inner join sensor as ss on sdha.sensor_id = ss.id 
-	inner join station as st on sdha.station_id = st.id 
-	where sdha.station_id = ${st_id} and sdha.bucket between '${dt_from}' and '${dt_to}'  
-	and ss.sensor_type in ('T', 'RH', 'CO2', 'PM2.5', 'PM10') 
-	order by sdha.bucket, ss.name
-
+	return `select SDHA.bucket as created_at, 
+	SDHA.avg as average,
+	SS.id as sensor_id from station_data_hourly_avg SDHA 
+	inner join sensor SS on SDHA.sensor_id = SS.id 
+	where SDHA.station_id = ${st_id} and SDHA.bucket between '${dt_from}' and '${dt_to}'  
+	and SS.sensor_type in ('${neededSensors.join("','")}') 
+	order by SDHA.bucket, SS.name
 	`
 }
+
