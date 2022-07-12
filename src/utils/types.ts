@@ -4,3 +4,16 @@ export type Station = {
 	latitude: number,
 	longitude: number
 }
+
+export type FetchBetweenDates = {
+	sensor_id: number,
+	sensor_type: string,
+	sensor_min_val: number,
+	sensor_max_val: number,
+	sensor_unit: string,
+	data: {
+		created_at: string,
+		average: number,
+	}[]
+}
+
