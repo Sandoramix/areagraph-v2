@@ -19,8 +19,8 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 	const [stationData, setStationData] = useState<FetchBetweenDates[] | null>(null);
 	const [selectedStationData, setSelectedStationData] = useState<FetchBetweenDates | null>(null);
 
-	const [startDate, setStartDate] = useState<Date>(fixDate(new Date()));
-	const [endDate, setEndDate] = useState<Date>(fixDate(new Date()));
+	const [startDate, setStartDate] = useState<Date | null>(fixDate(new Date()));
+	const [endDate, setEndDate] = useState<Date | null>(fixDate(new Date()));
 
 	const [startDateString, setStartDateString] = useState<string>(formatDate(fixDate(new Date())));
 	const [endDateString, setEndDateString] = useState<string>(formatDate(fixDate(new Date())));
@@ -34,8 +34,12 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 
 	useEffect(() => {
 		setStationData(null);
-		setSelectedStationData(null);
+
 	}, [station])
+
+	useEffect(() => {
+		setSelectedStationData(null)
+	}, [stationData])
 
 	if (!station) return null;
 
@@ -113,6 +117,7 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 					<button
 						onClick={async () => {
 							setIsLoading(true);
+							setStationData(null);
 
 							const request = await fetch(`${getBaseUrl()}/api/stations/${station.id}?start=${startDateString}&end=${endDateString}`);
 							const data = await request.json();
@@ -121,33 +126,49 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 						}}
 						disabled={!startDate || !endDate}
 						className={`${!startDate || !endDate ? `cursor-not-allowed ` : `cursor-pointer `} 
-						font-semibold text-lg text-zinc-800  hover:text-zinc-900 
-						bg-indigo-200 dark:bg-orange-500 hover:bg-indigo-300 dark:hover:bg-orange-400   
+						font-semibold text-lg text-black
+						bg-slate-300 dark:bg-orange-500 hover:bg-slate-200 dark:hover:bg-orange-400   
 						my-2 p-1.5 w-1/5 rounded-md`}
 					>Search</button>
 					<hr className="w-full" />
 
-					<ul className="my-4 sm:my-5 flex gap-2 w-full h-4 justify-center items-center">
-						{stationData && stationData.map((sensor) => {
-							return (
-								<li
-									onClick={() => {
-										setSelectedStationData(prev => {
-											if (prev?.sensor_id === sensor.sensor_id) return null
-											return sensor
-										})
-									}}
-									key={sensor.sensor_id}
-									className={`text-center font-semibold min-w-[50px] cursor-pointer  rounded-md p-1 
+
+					{
+						stationData ?
+							stationData.length > 0 && stationData[0]!.data.length > 0 ?
+								(
+									<ul className="my-4 sm:my-5 flex gap-2 w-full h-4 justify-center items-center">
+										{stationData.map((sensor) => {
+											return (
+												<li
+													onClick={() => {
+														setSelectedStationData(prev => {
+															if (prev?.sensor_id === sensor.sensor_id) return null
+															return sensor
+														})
+													}}
+													key={sensor.sensor_id}
+													className={`text-center font-semibold min-w-[50px] cursor-pointer  rounded-md p-1 
 									${selectedStationData?.sensor_id === sensor.sensor_id ?
-											`bg-blue-600 hover:bg-blue-800 text-white dark:text-black dark:bg-amber-500 dark:hover:bg-amber-400`
-											:
-											`bg-cyan-200 hover:bg-teal-500 dark:bg-amber-700 dark:hover:bg-amber-600 `}`}
-								>{sensor.sensor_type}
-								</li>
-							)
-						})}
-					</ul>
+															`bg-cyan-100 hover:bg-cyan-50 text-black dark:bg-amber-500 dark:hover:bg-amber-400`
+															:
+															`bg-cyan-300 hover:bg-cyan-200 dark:bg-amber-700 dark:hover:bg-amber-600 `}`}
+												>{sensor.sensor_type}
+												</li>
+											)
+										})}
+									</ul>
+								)
+								:
+								(
+									<>
+										<h2 className="text-2xl text-rose-300">N/A</h2>
+										<h4 className="text-white">Station has no data</h4>
+									</>
+								)
+							: <></>
+					}
+
 					{selectedStationData && <>{selectedStationData.data.length}</>}
 					{/* <LineChart data={selectedStationData} /> */}
 				</div>
