@@ -51,41 +51,33 @@ const getStations = async (req: NextApiRequest, res: NextApiResponse) => {
 		created_at: string,
 		average: number,
 		sensor_id: number,
-	}[] = data.rows
-
-	const mappedData: {
-		[key: number]: FetchBetweenDates
-	} = {}
-
-	let sensorsData = await DB.query(getSensors())
-
-	sensorsData.rows.forEach((sensor: {
-		sensor_id: number,
 		sensor_type: string,
 		sensor_min_val: number,
 		sensor_max_val: number,
 		sensor_unit: string,
-	}) => {
-		mappedData[sensor.sensor_id] = {
-			sensor_id: sensor.sensor_id,
-			sensor_max_val: sensor.sensor_max_val,
-			sensor_min_val: sensor.sensor_min_val,
-			sensor_type: sensor.sensor_type,
-			sensor_unit: sensor.sensor_unit,
-			data: [],
+		station_id: number,
+	}[] = data.rows
+
+	var result: FetchBetweenDates[] = []
+
+	list.forEach((item) => {
+		var index = result.findIndex(x => x.sensor_id === item.sensor_id)
+		if (index == -1) {
+			result.push({
+				station_id: item.station_id,
+				sensor_id: item.sensor_id,
+				sensor_type: item.sensor_type,
+				sensor_min_val: item.sensor_min_val,
+				sensor_max_val: item.sensor_max_val,
+				sensor_unit: item.sensor_unit,
+				data: []
+			})
+			index = result.length - 1
 		}
+		result[index]!.data.push({ average: item.average, created_at: item.created_at })
 	})
 
-
-	list.forEach(row => {
-		if (!mappedData[row.sensor_id]) return;
-
-		mappedData[row.sensor_id]!.data.push({
-			created_at: row.created_at,
-			average: row.average,
-		})
-	})
-	return res.status(200).json(mappedData)
+	return res.status(200).json(result)
 }
 
 

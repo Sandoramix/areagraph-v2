@@ -52,7 +52,12 @@ export const getSensors = () => `select S.id as sensor_id,S.sensor_type,S.min_ra
 export function fetch_betweenDates(st_id: number, dt_from: string, dt_to: string) {
 	return `select SDHA.bucket as created_at, 
 	SDHA.avg as average,
-	SS.id as sensor_id from station_data_hourly_avg SDHA 
+	SS.id as sensor_id,
+	SS.sensor_type,
+	SS.min_range_val as sensor_min_val,
+	SS.max_range_val as sensor_max_val,
+	SS.unit as sensor_unit,
+	SDHA.station_id from station_data_hourly_avg SDHA 
 	inner join sensor SS on SDHA.sensor_id = SS.id 
 	where SDHA.station_id = ${st_id} and SDHA.bucket between '${dt_from}' and '${dt_to}'  
 	and SS.sensor_type in ('${neededSensors.join("','")}') 
