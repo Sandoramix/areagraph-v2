@@ -6,6 +6,7 @@ export type Station = {
 }
 
 export type FetchBetweenDates = {
+	station_id: number,
 	sensor_id: number,
 	sensor_type: string,
 	sensor_min_val: number,
