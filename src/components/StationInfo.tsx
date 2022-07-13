@@ -1,19 +1,13 @@
-import { FC, memo, useMemo, useState } from "react";
+import { FC, memo, useEffect, useMemo, useState } from "react";
 import { FetchBetweenDates, Station } from "../utils/types";
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import Loading from "./Loading";
 import { getBaseUrl } from "../utils/baseUrl";
 import LineChart from "./LineChart";
+import { addDays, fixDate, formatDate } from "../utils/dates";
 
-function addDays(date: Date, days: number) {
-	var result = new Date(date);
-	result.setDate(result.getDate() + days);
-	return result;
-}
-function formatDate(date: Date) {
-	return date?.toISOString().slice(0, 10) || "";
-}
+
 
 
 type StationInfoProps = {
@@ -21,16 +15,27 @@ type StationInfoProps = {
 	resetStation: () => void,
 }
 const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
-	const [stationData, setStationData] = useState<{ [key: string]: FetchBetweenDates } | null>(null);
+
+	const [stationData, setStationData] = useState<FetchBetweenDates[] | null>(null);
 	const [selectedStationData, setSelectedStationData] = useState<FetchBetweenDates | null>(null);
 
-	const [startDate, setStartDate] = useState<Date>(new Date());
-	const [endDate, setEndDate] = useState<Date>(new Date());
+	const [startDate, setStartDate] = useState<Date>(fixDate(new Date()));
+	const [endDate, setEndDate] = useState<Date>(fixDate(new Date()));
 
-	const [startDateString, setStartDateString] = useState<string>(formatDate(new Date()));
-	const [endDateString, setEndDateString] = useState<string>(formatDate(new Date()));
+	const [startDateString, setStartDateString] = useState<string>(formatDate(fixDate(new Date())));
+	const [endDateString, setEndDateString] = useState<string>(formatDate(fixDate(new Date())));
+
+
+
+
+
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	useEffect(() => {
+		setStationData(null);
+		setSelectedStationData(null);
+	}, [station])
 
 	if (!station) return null;
 
@@ -39,8 +44,9 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 	return (
 		<>
 
-			<div className="select-none flex flex-col p-2 bg-gray-400  dark:bg-zinc-700 z-[100] fixed bottom-0 left-0 w-full h-1/2  
-						sm:min-w-[400px] sm:max-w-[600px] sm:left-auto sm:right-0 sm:top-20 sm:w-2/4 sm:h-innerpage " >
+			<div className="select-none flex flex-col p-2 
+					bg-gray-400  dark:bg-zinc-700 z-[100] fixed bottom-0 left-0 w-full h-3/5  
+					sm:min-w-[400px] sm:max-w-[600px] sm:left-auto sm:right-0 sm:top-20 sm:w-2/4 sm:h-innerpage " >
 				{isLoading && <Loading></Loading>}
 				<div
 					className="z-[100] cursor-pointer absolute right-1.5 top-1.5 w-9 h-9 fill-slate-50 hover:fill-slate-200 bg-rose-700 hover:bg-rose-800 dark:bg-red-600 dark:hover:bg-red-800 p-1 rounded-md"
@@ -64,15 +70,16 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 						<div className="w-1/2 flex flex-col text-center ">
 							<h4 className="text-lg text-white font-semibold">Start date</h4>
 							<DatePicker
-								className={`w-full text-center rounded-md font-mono ${!startDate ? `bg-red-300 dark:bg-red-500` : ``}`}
+								className={`w-full bg-gray-100 dark:bg-[#3b3b3b] text-center rounded-md font-mono ${!startDate ? `bg-red-300 dark:bg-red-500` : ``}`}
 								value={startDateString}
 								minDate={addDays(new Date(), -60)}
 								maxDate={endDate || new Date()}
 								selected={startDate}
 								onChange={
 									(date: Date) => {
-										setStartDate(date)
-										setStartDateString(formatDate(date))
+										let newDate = fixDate(date)
+										setStartDate(newDate);
+										setStartDateString(formatDate(newDate))
 									}}
 								dateFormat={"yyyy-MM-dd"}
 								allowSameDay={true}
@@ -83,13 +90,17 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 						<div className="w-1/2 flex flex-col text-center ">
 							<h4 className="text-lg text-white font-semibold">End date</h4>
 							<DatePicker
-								className={`w-full  text-center rounded-md font-mono ${!endDate ? `bg-red-300 dark:bg-red-500` : ``}`}
+								className={`w-full 
+								bg-gray-100 dark:bg-[#3b3b3b] 
+								text-center rounded-md font-mono 
+								${!endDate ? `bg-red-300 dark:bg-red-500` : ``}`}
 								value={endDateString}
 								minDate={startDate} maxDate={new Date()}
 								selected={endDate}
 								onChange={(date: Date) => {
-									setEndDate(date)
-									setEndDateString(formatDate(date))
+									let newDate = fixDate(date)
+									setEndDate(newDate)
+									setEndDateString(formatDate(newDate))
 								}}
 								dateFormat={"yyyy-MM-dd"}
 								allowSameDay={true}
@@ -102,28 +113,42 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 					<button
 						onClick={async () => {
 							setIsLoading(true);
+
 							const request = await fetch(`${getBaseUrl()}/api/stations/${station.id}?start=${startDateString}&end=${endDateString}`);
 							const data = await request.json();
 							setStationData(data);
 							setIsLoading(false);
 						}}
 						disabled={!startDate || !endDate}
-						className={`${!startDate || !endDate ? `cursor-not-allowed ` : `cursor-pointer `} font-semibold text-lg text-zinc-900 dark:text-white hover:text-slate-900 dark:hover:text-gray-200 bg-indigo-200 dark:bg-indigo-700 hover:bg-indigo-300 dark:hover:bg-indigo-900   mt-2 p-1.5 w-1/5 rounded-md`}
+						className={`${!startDate || !endDate ? `cursor-not-allowed ` : `cursor-pointer `} 
+						font-semibold text-lg text-zinc-800  hover:text-zinc-900 
+						bg-indigo-200 dark:bg-orange-500 hover:bg-indigo-300 dark:hover:bg-orange-400   
+						my-2 p-1.5 w-1/5 rounded-md`}
 					>Search</button>
+					<hr className="w-full" />
 
-					<ul className=" mt-4 sm:mt-8 flex gap-2 w-full h-4 justify-center items-center">
-						{stationData && Object.entries(stationData).map(([key, sensor]) => {
+					<ul className="my-4 sm:my-5 flex gap-2 w-full h-4 justify-center items-center">
+						{stationData && stationData.map((sensor) => {
 							return (
-								<li onClick={() => {
-									setSelectedStationData(prev => {
-										if (prev?.sensor_id === sensor.sensor_id) return null
-										return sensor
-									})
-								}} key={key} className={`text-center min-w-[50px] cursor-pointer  rounded-md p-1 ${selectedStationData?.sensor_id === sensor.sensor_id ? `bg-blue-600 hover:bg-blue-800 text-white` : `bg-cyan-200 dark:bg-slate-100 hover:bg-teal-500 dark:hover:bg-slate-400`}`}>{sensor.sensor_type}</li>
+								<li
+									onClick={() => {
+										setSelectedStationData(prev => {
+											if (prev?.sensor_id === sensor.sensor_id) return null
+											return sensor
+										})
+									}}
+									key={sensor.sensor_id}
+									className={`text-center font-semibold min-w-[50px] cursor-pointer  rounded-md p-1 
+									${selectedStationData?.sensor_id === sensor.sensor_id ?
+											`bg-blue-600 hover:bg-blue-800 text-white dark:text-black dark:bg-amber-500 dark:hover:bg-amber-400`
+											:
+											`bg-cyan-200 hover:bg-teal-500 dark:bg-amber-700 dark:hover:bg-amber-600 `}`}
+								>{sensor.sensor_type}
+								</li>
 							)
 						})}
 					</ul>
-
+					{selectedStationData && <>{selectedStationData.data.length}</>}
 					{/* <LineChart data={selectedStationData} /> */}
 				</div>
 			</div>
