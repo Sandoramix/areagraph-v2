@@ -119,7 +119,7 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 							setIsLoading(true);
 							setStationData(null);
 
-							const request = await fetch(`${getBaseUrl()}/api/stations/${station.id}?start=${startDateString}&end=${endDateString}`);
+							const request = await fetch(`${getBaseUrl()}/api/stations/${station.id}?start=${startDateString}+00:00&end=${endDateString}+24:00`);
 							const data = await request.json();
 							setStationData(data);
 							setIsLoading(false);
@@ -137,27 +137,35 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 						stationData ?
 							stationData.length > 0 && stationData[0]!.data.length > 0 ?
 								(
-									<ul className="my-4 sm:my-5 flex gap-2 w-full h-4 justify-center items-center">
-										{stationData.map((sensor) => {
-											return (
-												<li
-													onClick={() => {
-														setSelectedStationData(prev => {
-															if (prev?.sensor_id === sensor.sensor_id) return null
-															return sensor
-														})
-													}}
-													key={sensor.sensor_id}
-													className={`text-center font-semibold min-w-[50px] cursor-pointer  rounded-md p-1 
+									<>
+
+										<ul className="my-4 sm:my-5 flex gap-2 w-full h-4 justify-center items-center">
+											{stationData.map((sensor) => {
+												return (
+													<li
+														onClick={() => {
+															setSelectedStationData(prev => {
+																if (prev?.sensor_id === sensor.sensor_id) return null
+																return sensor
+															})
+														}}
+														key={sensor.sensor_id}
+														className={`text-center font-semibold min-w-[50px] cursor-pointer  rounded-md p-1 
 									${selectedStationData?.sensor_id === sensor.sensor_id ?
-															`bg-cyan-100 hover:bg-cyan-50 text-black dark:bg-amber-500 dark:hover:bg-amber-400`
-															:
-															`bg-cyan-300 hover:bg-cyan-200 dark:bg-amber-700 dark:hover:bg-amber-600 `}`}
-												>{sensor.sensor_type}
-												</li>
-											)
-										})}
-									</ul>
+																`bg-cyan-100 hover:bg-cyan-50 text-black dark:bg-amber-500 dark:hover:bg-amber-400`
+																:
+																`bg-cyan-300 hover:bg-cyan-200 dark:bg-amber-700 dark:hover:bg-amber-600 `}`}
+													>{sensor.sensor_type}
+													</li>
+												)
+											})}
+										</ul>
+										{selectedStationData && (
+											<>
+												<LineChart input={selectedStationData} />
+											</>
+										)}
+									</>
 								)
 								:
 								(
@@ -169,7 +177,7 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 							: <></>
 					}
 
-					{selectedStationData && <>{selectedStationData.data.length}</>}
+
 					{/* <LineChart data={selectedStationData} /> */}
 				</div>
 			</div>
