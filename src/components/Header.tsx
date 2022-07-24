@@ -27,13 +27,13 @@ const Header = () => {
 	}
 	return (
 		<>
-			<nav className={`${isOpen ? `z-50` : `z-30`}transition-colors duration-300 drop-shadow-md fixed top-0 left-0 h-20 w-full bg-slate-100  dark:bg-zinc-800 border-gray-500 px-1 sm:px-3 py-2  flex flex-wrap justify-between items-center`}>
+			<nav className={`${isOpen ? `z-50` : `z-30`} transition-colors duration-300 drop-shadow-md fixed top-0 left-0 h-20 w-full bg-slate-100  dark:bg-zinc-800 border-gray-500 px-1 sm:px-3 py-2  flex flex-wrap justify-between items-center`}>
 
 				<Link href="/" className="flex flex-nowrap justify-start items-center w-1/4">
-					<a className="flex items-center gap-1 hover:cursor-pointer text-zinc-900 dark:text-indigo-100 hover:text-indigo-800 dark:hover:text-indigo-400">
+					<div className="flex items-center gap-1 hover:cursor-pointer text-zinc-900 dark:text-indigo-100 hover:text-indigo-800 dark:hover:text-indigo-400">
 						<Image src="/images/logo.png" alt="Areagraph logo" height={50} width={50} className={``} />
 						<span className=" self-center text-xl font-semibold whitespace-nowrap ">Areagraph</span>
-					</a>
+					</div>
 				</Link>
 
 
@@ -45,8 +45,8 @@ const Header = () => {
 						type="button"
 						className="select-none mr-3 text-sm rounded-full focus:ring-2 focus:ring-indigo-800 dark:focus:ring-indigo-400"
 					>
-						<Link href="https://github.com/Sandoramix" >
-							<a target={`_blank`} rel="noopener" ><Image className="rounded-full aspect-square " src="/images/avatar.png" width={50} height={50} alt="Creator's avatar" /></a>
+						<Link href="https://github.com/Sandoramix" referrerPolicy="no-referrer">
+							<Image className="rounded-full aspect-square " src="/images/avatar.png" width={50} height={50} alt="Creator's avatar" />
 						</Link>
 					</button>
 
@@ -64,14 +64,18 @@ const Header = () => {
 						<svg className={`${isOpen ? `` : `hidden`} w-6 h-6`} fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
 					</button>
 				</div>
-				<div className={` ${isOpen ? `sm:border-0 border-t border-slate-900 dark:border-white fixed left-0 top-20 flex z-40 ` : `hidden`} drop-shadow-md w-full bg-gray-300 dark:bg-zinc-900 sm:bg-transparent sm:dark:bg-transparent text-center justify-center sm:justify-between items-center sm:relative sm:top-0 sm:flex sm:w-auto sm:order-1 w-2/4" `} id="mobile-menu-2">
-					<ul className="flex flex-col mt-4 sm:flex-row sm:gap-12 px-4 sm:mt-0 sm:text-sm sm:font-medium w-full">
-						{[["Home", "/"], ["Map", "/map"], ["About", "/about"]].map(([text, href], index) => (
-							<li key={`p-${index}`} className={`font-bold ${index != 2 ? `border-b border-slate-900 dark:border-indigo-50` : ``} sm:border-0 text-lg hover:cursor-pointer py-2 pr-4 pl-3 ${router.pathname === href ? `text-amber-700 dark:text-orange-600 hover:text-amber-600 dark:hover:text-orange-400` : `text-zinc-900 dark:text-slate-200 hover:text-indigo-900 dark:hover:text-indigo-400`} sm:bg-transparent sm:p-0`}>
-								<Link href={href || "/"}><a >{text}</a></Link>
-							</li>
-						))
-						}
+				<div className={`${isOpen ? `sm:border-0 border-t border-b border-slate-900 dark:border-white fixed left-0 top-20 flex z-40 ` : `hidden`} drop-shadow-xl w-full bg-slate-300 dark:bg-zinc-900 sm:bg-transparent sm:dark:bg-transparent text-center justify-center sm:justify-between items-center sm:relative sm:top-0 sm:flex sm:w-auto sm:order-1 w-2/4" `} id="mobile-menu-2">
+					<ul className="flex flex-col mt-4 sm:flex-row sm:gap-12 px-4 sm:mt-0 sm:text-sm sm:font-medium w-full ">
+
+						<li className={`font-bold border-b border-slate-900 dark:border-indigo-50 sm:border-0 text-lg hover:cursor-pointer py-2 pr-4 pl-3 ${router.pathname === "/" ? `text-amber-700 dark:text-orange-600 hover:text-amber-600 dark:hover:text-orange-400` : `text-zinc-900 dark:text-slate-200 hover:text-indigo-900 dark:hover:text-indigo-400`} sm:bg-transparent sm:p-0`}>
+							<Link href={"/"}><span >Home</span></Link>
+						</li>
+						<li className={`font-bold border-b border-slate-900 dark:border-indigo-50 sm:border-0 text-lg hover:cursor-pointer py-2 pr-4 pl-3 ${router.pathname === "/map" ? `text-amber-700 dark:text-orange-600 hover:text-amber-600 dark:hover:text-orange-400` : `text-zinc-900 dark:text-slate-200 hover:text-indigo-900 dark:hover:text-indigo-400`} sm:bg-transparent sm:p-0`}>
+							<Link href={"/map"}><span >Map</span></Link>
+						</li>
+						<li className={`font-bold sm:border-0 text-lg hover:cursor-pointer py-2 pr-4 pl-3 ${router.pathname === "/about" ? `text-amber-700 dark:text-orange-600 hover:text-amber-600 dark:hover:text-orange-400` : `text-zinc-900 dark:text-slate-200 hover:text-indigo-900 dark:hover:text-indigo-400`} sm:bg-transparent sm:p-0`}>
+							<Link href={"/about"}><span >About</span></Link>
+						</li>
 
 					</ul>
 				</div>
