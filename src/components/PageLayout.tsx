@@ -10,7 +10,7 @@ const PageLayout = ({ children }: PageLayoutProps) => {
 	return (
 		<>
 			<Header />
-			<div className="fixed w-full h-full mt-20 bg-gray-400 dark:bg-zinc-900">
+			<div className="fixed w-full h-full mt-20 bg-gray-400 dark:bg-neutral-900">
 				{children}
 			</div>
 		</>
