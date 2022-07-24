@@ -1,6 +1,7 @@
 import { NextPageContext } from "next";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import Loading from "../components/Loading";
 import { getBaseUrl } from "../utils/baseUrl";
@@ -29,7 +30,7 @@ export default function MapPage() {
 
 
 
-	const Map = dynamic(() => import("../components/Map"), { ssr: false });
+	const Map = dynamic(() => import("../components/MapNoSSR"), { ssr: false });
 
 	if (isLoading) return (
 		<>
@@ -42,7 +43,10 @@ export default function MapPage() {
 
 	return (
 		<>
-			<div className="h-innerpage w-innerpage relative">
+			<Head>
+				<title>AreaGraph v2 - Map</title>
+			</Head>
+			<div className="h-innerpage w-innerpage relative transition-colors duration-300">
 
 				<Map
 
