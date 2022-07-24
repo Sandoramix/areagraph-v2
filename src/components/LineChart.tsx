@@ -60,19 +60,17 @@ type LineChartProps = {
 const LineChart: FC<LineChartProps> = ({ input }) => {
 	const { theme } = useTheme();
 
-	const bgColor = theme === `dark` ? `bg-zinc-900` : `bg-sky-900`
+	const bgColor = theme === `dark` ? `bg-zinc-900` : `bg-indigo-900`
 	const lineColor: Color = theme === `dark` ? `orange` : `white`
 
 
 	if (!input) return null
 
 	const dangerLineValue = limits.get(input?.sensor_type) || -100
-	console.log(dangerLineValue);
-
 
 
 	const options: EChartsOption = {
-		grid: { top: 8, left: 8, right: 8, bottom: 8 },
+		grid: { top: 32, left: 33, right: 12, bottom: 64 },
 		xAxis: {
 			type: 'category',
 			name: 'Date',
@@ -88,19 +86,21 @@ const LineChart: FC<LineChartProps> = ({ input }) => {
 			nameTextStyle: {
 				fontWeight: 'bold',
 				align: 'right',
-
 			},
 			position: 'left',
 			boundaryGap: ["0%", "100%"],
-			max: (val) => input.sensor_type === 'RH' ? 100 : Math.floor(val.max) + (val.max > 200 ? 100 : 5),
-			maxInterval: 25,
-			minInterval: 0,
+			max: (val) => input.sensor_type === 'RH' ? 100 : Math.floor(val.max) + (val.max > 200 ? Math.ceil(50 - (val.max % 50)) : 1),
+			maxInterval: input.sensor_type === "CO2" ? 100 : 25,
+			minInterval: 5,
 			axisLine: { show: true, symbol: ['none', 'arrow'], symbolSize: [6, 12], symbolOffset: [0, 10] },
 			splitLine: { show: true, lineStyle: { color: '#fff', opacity: 0.2 } },
 		},
 		legend: {
 			show: true,
 			data: [input.sensor_type],
+		},
+		textStyle: {
+			color: '#fff',
 		},
 		series: [
 			{
@@ -121,6 +121,8 @@ const LineChart: FC<LineChartProps> = ({ input }) => {
 				areaStyle: {
 					opacity: 0.05,
 				},
+				showSymbol: true,
+
 				markLine: {
 					name: "Limit",
 					data: [{
@@ -206,8 +208,8 @@ const LineChart: FC<LineChartProps> = ({ input }) => {
 
 	return (<>
 		<div className='w-full h-full flex flex-col justify-between'>
-			<ReactECharts className={`w-full sm:h-full ${bgColor}`} option={options} notMerge={true} />
-			<div className='hidden sm:flex flex-col w-full h-auto font-serif mt-10 text-center p-2 bg-slate-200 dark:bg-zinc-900 bg-opacity-75 rounded-md ' dangerouslySetInnerHTML={{ __html: sensorInformations.get(input.sensor_type) || "" }} />
+			<ReactECharts className={`w-full sm:h-full rounded-lg ${bgColor}`} option={options} notMerge={true} />
+			<div className='hidden sm:flex flex-col w-full h-auto font-serif mt-10 text-center p-2 bg-indigo-200 dark:bg-zinc-900 bg-opacity-75 rounded-md ' dangerouslySetInnerHTML={{ __html: sensorInformations.get(input.sensor_type) || "" }} />
 		</div>
 	</>)
 }
