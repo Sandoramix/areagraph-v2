@@ -15,6 +15,7 @@ const Home: NextPage = () => {
 		}
 	}, [pageLoaded])
 
+
 	return (
 		<>
 			<div className="h-innerpage w-innerpage select-none overflow-y-auto">
