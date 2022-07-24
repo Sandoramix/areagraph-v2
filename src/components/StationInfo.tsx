@@ -50,7 +50,7 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 
 			<div className="select-none flex flex-col p-2 
 					bg-gray-400  dark:bg-zinc-700 z-[100] fixed bottom-0 left-0 w-full h-3/5  
-					sm:min-w-[400px] sm:max-w-[600px] sm:left-auto sm:right-0 sm:top-20 sm:w-2/4 sm:h-innerpage " >
+					sm:min-w-[600px] sm:max-w-[800px] sm:left-auto sm:right-0 sm:top-20 sm:w-2/4 sm:h-innerpage " >
 				{isLoading && <Loading></Loading>}
 				<div
 					className="z-[100] cursor-pointer absolute right-1.5 top-1.5 w-9 h-9 fill-slate-50 hover:fill-slate-200 bg-rose-700 hover:bg-rose-800 dark:bg-red-600 dark:hover:bg-red-800 p-1 rounded-md"
@@ -82,7 +82,10 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 								onChange={
 									(date: Date) => {
 										let newDate = fixDate(date)
-										setStartDate(newDate);
+										setStartDate(old => {
+											setStationData(null)
+											return newDate
+										});
 										setStartDateString(formatDate(newDate))
 									}}
 								dateFormat={"yyyy-MM-dd"}
@@ -103,7 +106,10 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 								selected={endDate}
 								onChange={(date: Date) => {
 									let newDate = fixDate(date)
-									setEndDate(newDate)
+									setEndDate(old => {
+										setStationData(null)
+										return newDate
+									})
 									setEndDateString(formatDate(newDate))
 								}}
 								dateFormat={"yyyy-MM-dd"}
@@ -176,9 +182,6 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 								)
 							: <></>
 					}
-
-
-					{/* <LineChart data={selectedStationData} /> */}
 				</div>
 			</div>
 		</>
