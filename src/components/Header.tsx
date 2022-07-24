@@ -27,7 +27,7 @@ const Header = () => {
 	}
 	return (
 		<>
-			<nav className={`${isOpen ? `z-50` : `z-30`} drop-shadow-md fixed top-0 left-0 h-20 w-full bg-slate-100  dark:bg-zinc-800 border-gray-500 px-1 sm:px-3 py-2  flex flex-wrap justify-between items-center`}>
+			<nav className={`${isOpen ? `z-50` : `z-30`}transition-colors duration-300 drop-shadow-md fixed top-0 left-0 h-20 w-full bg-slate-100  dark:bg-zinc-800 border-gray-500 px-1 sm:px-3 py-2  flex flex-wrap justify-between items-center`}>
 
 				<Link href="/" className="flex flex-nowrap justify-start items-center w-1/4">
 					<a className="flex items-center gap-1 hover:cursor-pointer text-zinc-900 dark:text-indigo-100 hover:text-indigo-800 dark:hover:text-indigo-400">
