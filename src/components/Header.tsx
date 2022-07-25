@@ -45,7 +45,7 @@ const Header = () => {
 						type="button"
 						className="select-none mr-3 text-sm rounded-full focus:ring-2 focus:ring-indigo-800 dark:focus:ring-indigo-400"
 					>
-						<Link href="https://github.com/Sandoramix" referrerPolicy="no-referrer">
+						<Link href="https://github.com/Sandoramix" target={"_blank"} referrerPolicy="no-referrer">
 							<Image className="rounded-full aspect-square " src="/images/avatar.png" width={50} height={50} alt="Creator's avatar" />
 						</Link>
 					</button>

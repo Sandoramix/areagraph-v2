@@ -12,7 +12,7 @@ const AboutPage = () => {
 					<span className="text-4xl text-white font-semibold">AreaGraph <span className="text-red-300 font-bold">v2</span></span>
 					<span className="text-white">made for educational purposes</span>
 					<span className="text-gray-300">Remake of&nbsp;
-						<Link href={"https://github.com/Sandoramix/AreaGraph"} referrerPolicy="no-referrer" className="">
+						<Link href={"https://github.com/Sandoramix/AreaGraph"} target={"_blank"} referrerPolicy="no-referrer" className="">
 							<span className="text-indigo-200 cursor-pointer hover:text-lg hover:underline transition-all ">AreaGraph</span>
 						</Link>
 					</span>
@@ -26,12 +26,12 @@ const AboutPage = () => {
 						<hr className="w-3/4" />
 						<span className="text-3xl font-bold">Used Tools</span>
 						<ul className="text-xl font-semibold">
-							<li>Frontend & Backend : <Link href={"https://nextjs.org/"} referrerPolicy={"no-referrer"} ><span className="text-indigo-700 hover:text-indigo-800 dark:text-indigo-200 curosr-pointer dark:hover:text-indigo-400 hover:underline transition-all cursor-pointer">NextJS</span></Link></li>
-							<li>Hosting: <Link href={"https://vercel.com"} referrerPolicy={"no-referrer"} ><span className="text-indigo-700 hover:text-indigo-800 dark:text-indigo-200 curosr-pointer dark:hover:text-indigo-400 hover:underline transition-all cursor-pointer">Vercel</span></Link></li>
+							<li>Frontend & Backend : <Link href={"https://nextjs.org/"} target={"_blank"} referrerPolicy={"no-referrer"} ><span className="text-indigo-700 hover:text-indigo-800 dark:text-indigo-200 curosr-pointer dark:hover:text-indigo-400 hover:underline transition-all cursor-pointer">NextJS</span></Link></li>
+							<li>Hosting: <Link href={"https://vercel.com"} target={"_blank"} referrerPolicy={"no-referrer"} ><span className="text-indigo-700 hover:text-indigo-800 dark:text-indigo-200 curosr-pointer dark:hover:text-indigo-400 hover:underline transition-all cursor-pointer">Vercel</span></Link></li>
 						</ul>
 
 					</div>
-					<footer className="bg-gray-900 w-full text-center text-white">©2022 <Link href={"https://vercel.com"} referrerPolicy={"no-referrer"} ><span className="text-indigo-200 hover:text-indigo-400 hover:underline transition-all cursor-pointer">D.Oleksandr/@Sandoramix</span></Link></footer>
+					<footer className="bg-gray-900 w-full text-center text-white">©2022 <Link href={"https://github.com/Sandoramix"} target={"_blank"} referrerPolicy={"no-referrer"} ><span className="text-indigo-200 hover:text-indigo-400 hover:underline transition-all cursor-pointer">D.Oleksandr/@Sandoramix</span></Link></footer>
 				</div>
 
 			</div>
