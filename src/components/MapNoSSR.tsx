@@ -38,7 +38,7 @@ const Map: FC<MapProps> = ({ allStations, workingStations }) => {
 
 	return (
 		<>
-			<MapContainer className="w-full h-full sm" zoom={9} minZoom={6} maxZoom={18} center={[43.775493, 11.282270]} ref={mapRef}>
+			<MapContainer className="w-full h-full sm" zoom={9} minZoom={7} maxZoom={18} center={[43.775493, 11.282270]} ref={mapRef}>
 				<TileLayer
 					attribution='<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib" >&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib" >&copy; OSM contributors</a>'
 					url={`https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token=${process.env.TILES_TOKEN}`}

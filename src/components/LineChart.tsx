@@ -207,8 +207,8 @@ const LineChart: FC<LineChartProps> = ({ input }) => {
 
 
 	return (<>
-		<div className='w-full h-full flex flex-col justify-between'>
-			<ReactECharts className={`w-full sm:h-full rounded-lg ${bgColor}`} option={options} notMerge={true} />
+		<div className='w-full min-h-[160px] h-full flex flex-col justify-between overflow-y-auto'>
+			<ReactECharts className={`w-full h-[150px] sm:h-full min-h-[150px] rounded-lg ${bgColor}`} option={options} notMerge={true} />
 			<div className='hidden sm:flex flex-col w-full h-auto font-serif mt-10 text-center p-2 bg-indigo-200 dark:bg-zinc-900 bg-opacity-75 rounded-md ' dangerouslySetInnerHTML={{ __html: sensorInformations.get(input.sensor_type) || "" }} />
 		</div>
 	</>)

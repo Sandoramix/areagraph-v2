@@ -20,11 +20,14 @@ const Home: NextPage = () => {
 		<>
 			<div className="h-innerpage w-innerpage select-none overflow-y-auto">
 				<div className="min-h-[180px] mb-2 w-full text-center relative text-black dark:text-white bg-inherit">
-					<div className="text-5xl font-bold font-serif min-h[60px] w-full z-10 transition-colors pt-6">AreaGraph</div>
-					<div ref={topContent} className="w-full min-h[120px] absolute left-1/2 -translate-x-1/2 bottom-1/2 transition-all duration-700 -z-10 break-words px-4">
-						<span className="text-2xl font-semibold font-mono text-zinc-800 dark:text-gray-300">View pollutant values in the air in a graph by choosing a date range</span>
+					<div className="text-4xl font-bold font-serif min-h[60px] w-full z-10 transition-colors pt-6">AreaGraph</div>
+					<div ref={topContent} 
+						className="w-full min-h[120px] absolute left-1/2 text-xl
+						-translate-x-1/2 bottom-1/2 transition-all duration-700 -z-10 break-words px-4"
+					>
+						<span className=" font-semibold font-mono text-zinc-800 dark:text-gray-300">View pollutant values in the air in a graph by choosing a date range</span>
 						<br />
-						<span className="animate-pulse text-indigo-700 dark:text-emerald-400 text-2xl font-bold font-mono"> In just a few clicks!</span>
+						<span className="animate-pulse text-indigo-700 dark:text-emerald-400 font-bold font-mono"> In just a few clicks!</span>
 					</div>
 				</div>
 				<div className="w-full min-h-[40px]">

@@ -32,14 +32,14 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	useEffect(() => {
-		setStationData(null);
+	// useEffect(() => {
+	// 	setStationData(null);
 
-	}, [station])
+	// }, [station])
 
-	useEffect(() => {
-		setSelectedStationData(null)
-	}, [stationData])
+	// useEffect(() => {
+	// 	setSelectedStationData(null)
+	// }, [stationData])
 
 	if (!station) return null;
 
@@ -49,11 +49,11 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 		<>
 
 			<div className="select-none flex flex-col p-2 
-					bg-gray-400  dark:bg-zinc-700 z-[100] fixed bottom-0 left-0 w-full h-3/5  
+					bg-gray-400  dark:bg-zinc-700 z-[200] fixed bottom-0 left-0 w-full h-3/5 min-h-[400px] 
 					sm:min-w-[600px] sm:max-w-[800px] sm:left-auto sm:right-0 sm:top-20 sm:w-2/4 sm:h-innerpage " >
 				{isLoading && <Loading></Loading>}
 				<div
-					className="z-[100] cursor-pointer absolute right-1.5 top-1.5 w-9 h-9 fill-slate-50 hover:fill-slate-200 bg-rose-700 hover:bg-rose-800 dark:bg-red-600 dark:hover:bg-red-800 p-1 rounded-md"
+					className="z-[500] cursor-pointer absolute right-1.5 top-1.5 w-9 h-9 fill-slate-50 hover:fill-slate-200 bg-rose-700 hover:bg-rose-800 dark:bg-red-600 dark:hover:bg-red-800 p-1 rounded-md"
 					onClick={() => {
 						resetStation();
 						setIsLoading(false)
@@ -143,35 +143,36 @@ const StationInfo: FC<StationInfoProps> = ({ station, resetStation }) => {
 						stationData ?
 							stationData.length > 0 && stationData[0]!.data.length > 0 ?
 								(
+									
 									<>
-
-										<ul className="my-4 sm:my-5 flex gap-2 w-full h-4 justify-center items-center">
-											{stationData.map((sensor) => {
-												return (
-													<li
-														onClick={() => {
-															setSelectedStationData(prev => {
-																if (prev?.sensor_id === sensor.sensor_id) return null
-																return sensor
-															})
-														}}
-														key={sensor.sensor_id}
-														className={`text-center font-semibold min-w-[50px] cursor-pointer  rounded-md p-1 
-									${selectedStationData?.sensor_id === sensor.sensor_id ?
-																`bg-cyan-100 hover:bg-cyan-50 text-black dark:bg-amber-500 dark:hover:bg-amber-400`
-																:
-																`bg-cyan-300 hover:bg-cyan-200 dark:bg-amber-700 dark:hover:bg-amber-600 `}`}
-													>{sensor.sensor_type}
-													</li>
-												)
-											})}
-										</ul>
-										{selectedStationData && (
-											<>
-												<LineChart input={selectedStationData} />
-											</>
-										)}
+									<ul className="my-4 sm:my-5 flex gap-2 w-full h-4 justify-center items-center">
+										{stationData.map((sensor) => {
+											return (
+												<li
+													onClick={() => {
+														setSelectedStationData(prev => {
+															if (prev?.sensor_id === sensor.sensor_id) return null
+															return sensor
+														})
+													}}
+													key={sensor.sensor_id}
+													className={`text-center font-semibold min-w-[50px] cursor-pointer  rounded-md p-1 
+								${selectedStationData?.sensor_id === sensor.sensor_id ?
+															`bg-cyan-100 hover:bg-cyan-50 text-black dark:bg-amber-500 dark:hover:bg-amber-400`
+															:
+															`bg-cyan-300 hover:bg-cyan-200 dark:bg-amber-700 dark:hover:bg-amber-600 `}`}
+												>{sensor.sensor_type}
+												</li>
+											)
+										})}
+									</ul>
+									{selectedStationData && (
+										<>
+											<LineChart input={selectedStationData} />
+										</>
+									)}
 									</>
+									
 								)
 								:
 								(
